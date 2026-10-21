@@ -22,7 +22,7 @@
 <style>
 /* --- V15 hero upgrade: reference-inspired animated portrait hero --- */
 .hero{position:relative;overflow:hidden;min-height:100svh;background:radial-gradient(circle at 50% 32%, rgba(255,126,31,.22), rgba(255,126,31,0) 34%),linear-gradient(180deg,#070707 0%,#0d0907 55%,#090b12 100%);}
-.hero-photo,.hero-wash,.hero-noise,.hero-reels,.hero-chip,.tiny-manifesto,.side-note{display:none!important}
+.hero-photo,.hero-wash,.hero-noise,.hero-chip,.tiny-manifesto,.side-note{display:none!important}
 .hero .site-header{position:relative;z-index:20}
 .hero-copy{display:none!important}
 .hero-spotlight{position:relative;z-index:5;padding:2rem 0 5.25rem}
@@ -42,7 +42,8 @@
 .hero-spotlight__number{position:absolute;top:2%;left:50%;transform:translateX(-50%);font-size:clamp(6rem,19vw,15rem);font-weight:900;letter-spacing:-.06em;line-height:.9;color:transparent;-webkit-text-stroke:1.8px rgba(255,255,255,.13);text-transform:uppercase;white-space:nowrap;pointer-events:none;user-select:none}
 .hero-spotlight__number::after{content:'100M+';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,138,75,.26),rgba(255,138,75,.02) 72%);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.48;filter:blur(.2px)}
 .hero-portrait-shell{position:relative;width:min(620px,92%);z-index:2;display:flex;justify-content:center;align-items:flex-end;animation:heroFloat 7s ease-in-out infinite;filter:drop-shadow(0 30px 42px rgba(0,0,0,.45))}
-.hero-portrait-shell img{display:block;width:100%;height:auto;object-fit:contain}
+.hero-portrait-shell img,.hero-portrait-shell video{display:block;width:100%;height:auto;object-fit:contain}
+.hero-portrait-shell video{background:transparent;mix-blend-mode:normal}
 @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .callout{position:absolute;min-width:200px;max-width:260px;padding:1rem 1.05rem;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(18,18,18,.72);backdrop-filter:blur(18px);box-shadow:0 20px 45px rgba(0,0,0,.35);opacity:0;transform:translateY(18px) scale(.98);animation:fadeUp .8s forwards;z-index:4}
 .callout:nth-of-type(2){animation-delay:.15s}.callout:nth-of-type(3){animation-delay:.3s}.callout:nth-of-type(4){animation-delay:.45s}.callout:nth-of-type(5){animation-delay:.6s}
@@ -56,6 +57,10 @@
 .callout--bl{bottom:22%;left:4%}.callout--bl::before{height:1px;width:100px;right:-92px;top:52%}.callout--bl::after{right:-96px;top:calc(52% - 3px)}
 .callout--br{bottom:20%;right:1%}.callout--br::before{height:1px;width:118px;left:-110px;top:52%}.callout--br::after{left:-114px;top:calc(52% - 3px)}
 .hero-footer{position:relative;z-index:15;margin-top:-1rem}
+/* restored hero reel strip */
+.hero-reels{position:relative;z-index:14;width:min(1500px,calc(100% - 80px));margin:.5rem auto 0}
+.hero-reels .reels-track{align-items:flex-end}
+@media (max-width:760px){.hero-reels{width:100%;margin:1rem auto 0}}
 @media (max-width:1100px){
   .hero-spotlight__inner{grid-template-columns:1fr;align-items:start;padding-top:1rem;min-height:auto}
   .hero-spotlight__copy{max-width:none;text-align:center;padding-bottom:0}
@@ -135,10 +140,67 @@
         <span class="callout__meta">creators, brands & channels</span>
       </article>
       <div class="hero-portrait-shell">
-        <img alt="Irfan Raza premium portrait" src="assets/images/irfan-hero-cutout.png"/>
+        <video aria-label="Animated portrait of Irfan Raza" autoplay="" class="hero-portrait-animated" loop="" muted="" playsinline="" poster="assets/images/irfan-hero-cutout.png">
+          <source src="assets/images/irfan-hero-animated.webm" type="video/webm"/>
+          <img alt="Irfan Raza premium portrait" src="assets/images/irfan-hero-cutout.png"/>
+        </video>
       </div>
     </div>
   </div>
+</div>
+<div aria-label="Featured reel strip" class="hero-reels">
+<div class="reels-track" id="hero-reels">
+<button aria-label="Watch smartwatch experiment video" class="reel-card tone-amber" data-video="7" type="button">
+<img alt="Smartwatch experiment video frame" height="960" loading="eager" src="assets/images/smartwatch-test.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">REAL TESTS<br/>REAL REACTIONS</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Tech Experiment</span><span class="reel-sub">TECH · TESTS · SOCIAL</span><span class="reel-duration">01:10</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Watch Chandrasekhar documentary" class="reel-card tone-ice" data-video="0" type="button">
+<img alt="Chandrasekhar documentary frame" height="960" loading="eager" src="assets/images/chandrasekhar-preview.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">REAL PEOPLE<br/>REAL STORIES</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Documentary Edit</span><span class="reel-sub">PEOPLE · POWER · PURPOSE</span><span class="reel-duration">01:09</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Watch Dhondo Keshav Karve documentary" class="reel-card tone-pink" data-video="1" type="button">
+<img alt="Dhondo Keshav Karve documentary frame" height="960" loading="eager" src="assets/images/dhondo-karve.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">A STORY<br/>WORTH TELLING</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Dhondo Keshav Karve</span><span class="reel-sub">DOCUMENTARY · HISTORY</span><span class="reel-duration">01:07</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Watch vegetables explainer video" class="reel-card tone-blue" data-video="2" type="button">
+<img alt="Vegetables explainer frame" height="960" loading="eager" src="assets/images/vegetables-preview.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">IDEAS<br/>IN MOTION</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Explainer Video</span><span class="reel-sub">IDEAS · STORIES · CLARITY</span><span class="reel-duration">00:57</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Play Commercial: ANARC Watch" class="reel-card tone-amber" data-video="3" type="button">
+<img alt="ANARC watch commercial thumbnail" height="960" loading="eager" src="assets/images/anarc-watch.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">BRANDS<br/>IDEAS<br/>RESULTS</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Commercial</span><span class="reel-sub">ADS · PROMOS · BRAND FILMS</span><span class="reel-duration">00:58</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Play Product Film: NEWWN Cuts" class="reel-card tone-purple" data-video="4" type="button">
+<img alt="NEWWN Cuts product film thumbnail" height="960" loading="eager" src="assets/images/newn-cuts.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">DETAILS THAT<br/>DESERVE ATTENTION</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Product Film</span><span class="reel-sub">PRODUCTS · SOCIAL · STYLE</span><span class="reel-duration">00:49</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+<button aria-label="Watch Infinity Admission video" class="reel-card tone-blue" data-video="8" type="button">
+<img alt="Infinity Admission video frame" height="960" loading="eager" src="assets/images/infinity-admission.webp" width="540"/>
+<video aria-hidden="true" class="reel-preview" loop="" muted="" playsinline="" preload="none"></video>
+<span aria-hidden="true" class="reel-hover-hint">CLICK HERE TO WATCH ↗</span>
+<span class="reel-topline">CLEAR MESSAGE<br/>STRONG HOOK</span><span aria-hidden="true" class="reel-play">▶</span>
+<span class="reel-info"><span class="reel-title">Infinity Admission</span><span class="reel-sub">EDUCATION · BRAND</span><span class="reel-duration">00:47</span></span><span aria-hidden="true" class="timeline"></span>
+</button>
+</div>
+<div class="mobile-swipe-note">SWIPE TO EXPLORE <span aria-hidden="true">⟶</span></div>
 </div>
 <div class="hero-footer wrap"><span>— &nbsp; PREMIUM EDITS · STRONGER STORIES</span><a aria-label="Scroll to selected work" href="#work"><span aria-hidden="true" class="scroll-mouse"></span>SCROLL TO EXPLORE</a><span>— &nbsp; SHORT FORM · LONG FORM · AI FILMS</span></div>
 </section>
