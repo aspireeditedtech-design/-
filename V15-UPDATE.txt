@@ -1,0 +1,14 @@
+Irfan Raza Portfolio — V15 GitHub Ready
+
+This package is based on the complete V14 deployable site and includes the new hero upgrade:
+- New reference-inspired portrait hero
+- Transparent PNG portrait cutout
+- Animated stat callout cards
+- Giant 100M+ outlined background statistic
+- Existing gallery, videos, client cards, scripts, styles, and GitHub workflow preserved
+
+Deploy:
+1. Extract this ZIP.
+2. Upload ALL files and folders to the root of your GitHub Pages repository.
+3. Keep .nojekyll and the .github folder.
+4. Commit/push the files.
