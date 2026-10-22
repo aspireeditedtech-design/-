@@ -472,11 +472,13 @@
   .hero-pin.is-pinned .hero{position:sticky;top:var(--pin-top,0px)}
   .hero-pin.is-pinned .hero-pin-space{height:var(--pin-distance,110vh)}
 }
-.stage-particles{position:absolute;top:-35%;bottom:-35%;left:-45%;right:-45%;width:190%;height:170%;pointer-events:none;opacity:0;transition:opacity .5s ease;-webkit-mask-image:linear-gradient(0deg,transparent 21.8%,#000 35.6%);mask-image:linear-gradient(0deg,transparent 21.8%,#000 35.6%)}
 .hero-stage.js-stage .stage-poster{opacity:0}
-.hero-stage.is-assembling .stage-particles{opacity:1;transition:none}
-.stage-canvas{transition:opacity .5s ease}
+.hero-stage.is-assembling .stage-canvas{transition:opacity .5s ease}
 .stage-hint{position:absolute;z-index:4;left:50%;bottom:6%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:8px 14px;border:1px solid rgba(255,255,255,.18);border-radius:99px;background:rgba(14,16,28,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:11px;font-weight:700;color:#e6e4f2;white-space:nowrap;opacity:0;transition:opacity .4s ease}
 .stage-hint:before{content:'';width:11px;height:17px;border:1.5px solid #d9d6ea;border-radius:7px;box-sizing:border-box;background:radial-gradient(circle at 50% 30%,#fff 1.5px,transparent 2px)}
 .hero-stage.show-hint .stage-hint{opacity:1}
 @media (min-width:801px){.stage-hint{bottom:auto;top:74%;left:-2%;transform:none}}
+
+/* V17: full-window particle blast on open */
+.page-particles{position:fixed;inset:0;width:100vw;height:100vh;z-index:60;pointer-events:none;transition:opacity .45s ease}
+.page-particles.is-gone{opacity:0}

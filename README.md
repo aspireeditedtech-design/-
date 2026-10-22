@@ -125,3 +125,6 @@ No other sections or video files have been modified.
 - The arm fold is now driven by scroll. On desktop the hero stays pinned while you scroll through the fold, and scrolling back up unfolds the arms. On phones the first ~360px of scroll drives it. A "Scroll to play" hint shows until the visitor starts scrolling.
 - "4–5 years" changed to "5+ years" (hero note, hero paragraph, About). "Hire Me" buttons renamed to "Get in touch".
 - The particle effect needs the site served over http(s), which GitHub Pages does. If you open index.html straight from your computer, it skips the particles and shows the photo directly.
+
+## V17 updates
+- Opening animation: the portrait appears as particles, blasts out across the whole browser window, floats for a moment, then flies back together into the photo. Everything else (scroll-driven arm fold, notes, buttons) is unchanged.

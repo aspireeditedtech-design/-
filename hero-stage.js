@@ -1,5 +1,5 @@
 /* V16 hero
-   1. Particles fly in and assemble into the first frame of the portrait.
+   1. On open, the portrait (as particles) blasts out across the whole window, then flies back together.
    2. Scrolling then scrubs the 192-frame sequence (arms fold); scrolling back up unfolds them.
       On desktop the hero stays pinned while the frames play; on phones the first scroll drives it.
    3. Pointer notes appear: two after the build-up, two as the arms fold. */
@@ -10,7 +10,6 @@
   const pin = document.querySelector('.hero-pin');
   const hero = document.querySelector('.hero');
   const canvas = stage.querySelector('.stage-canvas');
-  const dust = stage.querySelector('.stage-particles');
   const poster = stage.querySelector('.stage-poster');
   const notes = [...stage.querySelectorAll('.stage-note')];
   const total = Number(stage.dataset.frames) || 1;
@@ -106,10 +105,9 @@
     onScroll();
   }
   function assemble(img) {
-    sizeCanvas(dust); sizeCanvas(canvas);
-    // The particle canvas is larger than the portrait so the scattered dust is not cut off at a box edge.
-    const W = dust.width, H = dust.height, scale = dpr();
-    const fw = canvas.width, fh = canvas.height, ox = (W - fw) / 2, oy = (H - fh) / 2;
+    sizeCanvas(canvas);
+    // Sample the first frame at CSS-pixel resolution inside the portrait box.
+    const fw = Math.round(canvas.clientWidth), fh = Math.round(canvas.clientHeight);
     let pixels;
     try {
       const off = document.createElement('canvas');
@@ -119,42 +117,85 @@
       pixels = o.getImageData(0, 0, fw, fh).data;
     } catch (_) { finishIntro(); return; } // e.g. opened from file:// — skip straight to the image
 
-    const step = Math.max(3, Math.round(3.4 * scale));
-    const size = step * 0.92;
+    // Full-window overlay so the blast can spread over the whole page.
+    const dust = document.createElement('canvas');
+    dust.className = 'page-particles';
+    dust.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(dust);
+    const dctx = dust.getContext('2d');
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+    let vw = 0, vh = 0;
+    const sizeDust = () => {
+      vw = window.innerWidth; vh = window.innerHeight;
+      dust.width = Math.round(vw * ratio); dust.height = Math.round(vh * ratio);
+      dctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    sizeDust();
+    window.addEventListener('resize', sizeDust, { passive: true });
+
+    const step = vw < 600 ? 3 : 3.4;
+    const size = step * 0.95;
     const parts = [];
     for (let y = 0; y < fh; y += step) {
       for (let x = 0; x < fw; x += step) {
-        const p = (y * fw + x) * 4;
+        const p = (Math.floor(y) * fw + Math.floor(x)) * 4;
         if (pixels[p + 3] < 110) continue;
-        const angle = Math.random() * Math.PI * 2;
-        const reach = 0.25 + Math.sqrt(Math.random()) * 0.72;
+        // Match the soft fade at the bottom of the portrait.
+        const fade = Math.min(1, Math.max(0, (1 - y / fh - 0.02) / 0.24));
+        if (fade <= 0.02) continue;
         parts.push({
-          x: x + ox, y: y + oy,
-          sx: W / 2 + Math.cos(angle) * reach * W * 0.42,
-          sy: H * 0.46 + Math.sin(angle) * reach * H * 0.44,
-          delay: (y / fh) * 650 + Math.random() * 500,
+          x, y, fade,
+          // a random spot anywhere in the window (a little past the edges too)
+          ex: (Math.random() * 1.2 - 0.1) * vw,
+          ey: (Math.random() * 1.2 - 0.1) * vh,
+          dx: (Math.random() - 0.5) * 0.05,
+          dy: (Math.random() - 0.5) * 0.05,
+          out: Math.random() * 140,
+          back: (y / fh) * 520 + Math.random() * 380,
           color: `rgb(${pixels[p]},${pixels[p + 1]},${pixels[p + 2]})`
         });
       }
     }
-    const dctx = dust.getContext('2d');
-    const duration = 1600, total = duration + 1150;
-    const ease = (t) => 1 - Math.pow(1 - t, 3);
+
+    const HOLD = 260, BLAST = 900, FLOAT = 420, RETURN = 1350;
+    const backStart = HOLD + BLAST + FLOAT;
+    const end = backStart + 520 + 380 + RETURN;
+    const outExpo = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
+    const inOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
     stage.classList.add('is-assembling', 'is-live');
     const start = performance.now();
     const frame = (now) => {
       const t = now - start;
-      dctx.clearRect(0, 0, W, H);
+      const r = canvas.getBoundingClientRect(); // follows the portrait even if the page scrolls
+      dctx.clearRect(0, 0, vw, vh);
       for (const q of parts) {
-        const k = ease(Math.min(1, Math.max(0, (t - q.delay) / duration)));
-        const life = Math.min(1, t / 500);
-        dctx.globalAlpha = life * (0.35 + 0.65 * k);
+        const hx = r.left + q.x, hy = r.top + q.y; // home position
+        let px, py, a = q.fade, s = size;
+        const tb = t - HOLD - q.out;
+        if (tb <= 0) {
+          px = hx; py = hy; a *= clamp01(t / 200);
+        } else {
+          const k = outExpo(clamp01(tb / BLAST));
+          const drift = Math.max(0, Math.min(t, backStart + q.back) - HOLD - q.out);
+          const fx = q.ex + q.dx * drift * 4, fy = q.ey + q.dy * drift * 4;
+          const sx = hx + (fx - hx) * k, sy = hy + (fy - hy) * k;
+          const kb = inOut(clamp01((t - backStart - q.back) / RETURN));
+          px = sx + (hx - sx) * kb; py = sy + (hy - sy) * kb;
+          const away = k * (1 - kb);
+          a *= 1 - 0.35 * away;
+          s = size * (1 + 0.6 * away);
+        }
+        dctx.globalAlpha = a;
         dctx.fillStyle = q.color;
-        const s = size * (1.8 - 0.8 * k);
-        dctx.fillRect(q.sx + (q.x - q.sx) * k, q.sy + (q.y - q.sy) * k, s, s);
+        dctx.fillRect(px, py, s, s);
       }
-      if (t < total) requestAnimationFrame(frame);
-      else { dctx.globalAlpha = 1; finishIntro(); }
+      if (t < end) { requestAnimationFrame(frame); return; }
+      dctx.globalAlpha = 1;
+      finishIntro();
+      dust.classList.add('is-gone');
+      setTimeout(() => { window.removeEventListener('resize', sizeDust); dust.remove(); }, 600);
     };
     requestAnimationFrame(frame);
   }
