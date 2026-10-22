@@ -119,3 +119,9 @@ No other sections or video files have been modified.
 - Hero background photo removed. The hero now plays a transparent cut-out animation (192 frames in `assets/hero-frames/`, drawn on a canvas by `hero-stage.js`): standing pose → arms folded, about 6 seconds, replays when the hero comes back into view. Reduced-motion visitors see the final pose.
 - Giant "100M+ views" figure behind the portrait, plus four point-out notes (4–5 years, 200+ projects, Keerthi, Tech Burner). Edit the text inside `.stage-note` in `index.html`; reveal timing is the `data-at` frame number.
 - Upload `hero-stage.js` and the whole `assets/hero-frames/` folder along with the other files.
+
+## V16 updates
+- Hero intro: the portrait first appears as scattered particles that fly together into the photo, then hands over to the real image.
+- The arm fold is now driven by scroll. On desktop the hero stays pinned while you scroll through the fold, and scrolling back up unfolds the arms. On phones the first ~360px of scroll drives it. A "Scroll to play" hint shows until the visitor starts scrolling.
+- "4–5 years" changed to "5+ years" (hero note, hero paragraph, About). "Hire Me" buttons renamed to "Get in touch".
+- The particle effect needs the site served over http(s), which GitHub Pages does. If you open index.html straight from your computer, it skips the particles and shows the photo directly.
