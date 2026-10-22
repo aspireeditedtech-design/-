@@ -128,3 +128,6 @@ No other sections or video files have been modified.
 
 ## V17 updates
 - Opening animation: the portrait appears as particles, blasts out across the whole browser window, floats for a moment, then flies back together into the photo. Everything else (scroll-driven arm fold, notes, buttons) is unchanged.
+
+## V18 updates
+- Phone fix: the "200+ projects" note now points at the folded arms instead of sitting on the face; the "Scroll to play" hint moved to the top-left on phones.

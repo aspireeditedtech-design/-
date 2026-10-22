@@ -446,10 +446,10 @@
   .stage-label span{font-size:9px}
   .stage-note{--len:14px}
   .note-a{--x:37%;--y:22%}
-  .note-b{--x:22%;--y:42%}
+  .note-b{--x:20%;--y:87%}
   .note-c{--x:71%;--y:67%}
   .note-d{--x:76%;--y:83%}
-  .stage-label span{white-space:normal;max-width:96px}
+  .stage-label span{white-space:normal;max-width:140px}
   .hero-reels{margin-top:24px}
   .stage-big{justify-items:end}
   .stage-big>span{font-size:calc(var(--fig-h) * .33)}
@@ -482,3 +482,6 @@
 /* V17: full-window particle blast on open */
 .page-particles{position:fixed;inset:0;width:100vw;height:100vh;z-index:60;pointer-events:none;transition:opacity .45s ease}
 .page-particles.is-gone{opacity:0}
+
+/* V18: phone fix, keep the 200+ note off the face and the hint clear of it */
+@media (max-width:800px){.stage-hint{top:2%;bottom:auto;left:0;transform:none;padding:6px 11px;font-size:10px}}
